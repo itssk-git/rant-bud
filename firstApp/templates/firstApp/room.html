@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+
+{% block header %}
+<h1>This is the room page</h1>
+{% endblock %}
+
+{% block content %}
+  
+{% if room  %}
+<h1>{{room.name}}</h1>
+<p>{{room.description}}</p>
+{% endif %}
+{% endblock %}
