@@ -5,9 +5,45 @@
 {% endblock %}
 
 {% block content %}
-  
-{% if room  %}
-<h1>{{room.name}}</h1>
-<p>{{room.description}}</p>
-{% endif %}
+<div style="display: grid; grid-template-columns: 3fr 1fr; gap: 20px;">
+
+    <!-- Main Content Section (3fr) -->
+    <div>
+        {% if room %}
+        <div>
+            <h1>{{ room.name }}</h1>
+            <p>Created {{ room.created|timesince }} ago</p>
+            <p>HOSTED BY</p>
+            <p>{{ room.host }}</p>
+            <p>{{ room.description }}</p>
+        </div>
+        <div>
+            {% for message in messages %}
+            <hr>
+            <p>@{{ message.user.username }} <span>{{ message.created|timesince }} ago</span></p>
+            <p>{{ message.body }}</p>
+            {% endfor %}
+            <hr>
+        </div>
+        <div class="message">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="message">
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Participants Section (1fr) -->
+    <div>
+        <h2>Participants</h2>
+        <ul>
+            {% for participant in participants %}
+            <li>{{ participant.username }}</li>
+            {% empty %}
+            <li>No participants yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}
