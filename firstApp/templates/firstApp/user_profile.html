@@ -1,9 +1,4 @@
 {% extends 'main.html' %}
-
-{% block header %}
-<h1>Welcome to the Homepage</h1>
-{% endblock %}
-
 {% block content %}
 <style>
     .home-container {
@@ -50,16 +45,6 @@
     </div>
 
     <div>
-        <h1>Top Hosts</h1>      
-        {% for host in hosts %}
-        <p><a href="{% url 'profile' host.host__id%}">@{{ host.host__username }}</a> - {{ host.room_count }} rooms</p>
-        {% endfor %}
-      
-     
-        
-
-
-
         {% include 'firstApp/activity_component.html' %}
 
    

@@ -1,0 +1,10 @@
+<h1>Recent Activities</h1>
+<hr>
+{% for message in messages %}
+<small>@{{message.user.username}}</small> 
+<p>{{message.created|timesince}} ago</p> 
+<p>replied to a post <a href="{% url 'room' message.room.id %}">{{message.room}}</a></p>
+<p>{{message.body}}</p>
+<hr>
+
+{% endfor %}

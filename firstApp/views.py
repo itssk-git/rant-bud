@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q,Count
 from .models import Room,Topic,Message
 from .forms import RoomForm
 from django.contrib.auth.models import User
@@ -52,6 +52,16 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+def user_profile(request,pk):
+    user=User.objects.get(id=pk)
+    rooms=Room.objects.filter(host=user)
+    room_counts=rooms.count()
+    topics=Topic.objects.all()
+    messages=Message.objects.filter(user=user).order_by('-created','-updated')[:8]
+
+    context={"rooms":rooms,"topics":topics,"messages":messages,"room_counts":room_counts}
+    return render(request,'firstApp/user_profile.html',context=context)
+
 def home(request):
     q=request.GET.get('q') if request.GET.get('q')!=None else ''
     
@@ -60,10 +70,19 @@ def home(request):
                               Q(description__icontains=q)
                               )
     topics=Topic.objects.all()
+    top_hosts = (
+        Room.objects.values('host__id','host__username')
+        .annotate(room_count=Count('id'))
+        .order_by('-room_count')
+    )
+   
+    
     room_counts=rooms.count()
+    messages=Message.objects.all().order_by('-created','-updated')[:8]
+    
     
 
-    context={"rooms":rooms,"topics": topics,"room_counts":room_counts}
+    context={"rooms":rooms,"topics": topics,"room_counts":room_counts,"messages":messages,"hosts":top_hosts}
     return render(request,"firstApp/home.html",context=context)
 def room(request,pk):
     room=Room.objects.get(id=int(pk))
