@@ -1,55 +1,54 @@
 {% extends 'main.html' %}
 {% block content %}
-<style>
-    .home-container {
-        display: grid;
-        grid-template-columns: 1fr 3fr 1fr; /* Sidebar (1 fraction), Main content (3 fractions) */
-        gap: 20px; /* Space between columns */
-        align-items: start; /* Align items at the start of the grid row */
-    }
-    .home-container div {
-        padding: 10px;
-    }
-    .home-container div:first-child {
-        border-right: 1px solid #ccc; /* Divider between sidebar and main content */
-    }
-    .home-container a {
-        text-decoration: none;
-        color: blue;
-        margin-right: 10px;
-    }
-    .home-container hr {
-        border: 1px solid #ccc;
-    }
-    .home-container .sidebar p {
-        font-weight: bold;
-    }
-    .home-container .rooms a {
-        display: inline-block;
-        margin: 5px 0;
-    }
-</style>
-
-<div class="home-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        {% include 'firstApp/topic_component.html' %}
-        
-    </div>
-
-    <!-- Main Content -->
-    <div class="rooms">
-        {% include 'firstApp/feed_component.html' %}
-
+<main class="layout layout--3">
+      <div class="container">
        
-    </div>
+        <!-- Topics Start -->
+        {% include 'firstApp/topic_component.html' %}
+        <!-- Topics End -->
 
-    <div>
+        <!-- Room List Start -->
+
+        <div class="roomList">
+            <div class="profile">
+              <div class="profile__avatar">
+                <div class="avatar avatar--large active">
+                  <img src="https://randomuser.me/api/portraits/men/11.jpg" />
+                </div>
+              </div>
+              <div class="profile__info">
+                <h3>Dennis Kardasian Ivy</h3>
+                <p>@dennis_ivy</p>
+                <a href="edit-user.html" class="btn btn--main btn--pill">Edit Profile</a>
+              </div>
+              <div class="profile__about">
+                <h3>About</h3>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur illo tenetur
+                  facilis sunt nemo debitis quisquam hic atque aut? Ducimus alias placeat optio
+                  accusamus repudiandae quis ab ex exercitationem rem?
+                </p>
+              </div>
+            </div>
+            <div class="roomList__header">
+              <div>
+                <h2>Study Rooms Hosted by @{{room.host.username}}</a>
+                </h2>
+              </div>
+            </div>
+            {% include 'firstApp/feed_component.html' %}
+       
+          </div>
+
+        
+        <!-- Room List End -->
+
+        <!-- Activities Start -->
         {% include 'firstApp/activity_component.html' %}
 
-   
-
-
-    </div>
-</div>
+        <!-- Activities End -->
+     
+       
+      </div>
+</main>
 {% endblock %}

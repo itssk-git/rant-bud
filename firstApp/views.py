@@ -63,6 +63,7 @@ def user_profile(request,pk):
     return render(request,'firstApp/user_profile.html',context=context)
 
 def home(request):
+    page='home'
     q=request.GET.get('q') if request.GET.get('q')!=None else ''
     
     rooms=Room.objects.filter(Q(topic__name__icontains=q) |
@@ -82,10 +83,12 @@ def home(request):
     
     
 
-    context={"rooms":rooms,"topics": topics,"room_counts":room_counts,"messages":messages,"hosts":top_hosts}
+    context={"rooms":rooms,"topics": topics,"room_counts":room_counts,"messages":messages,"hosts":top_hosts,'page':page}
     return render(request,"firstApp/home.html",context=context)
 def room(request,pk):
+
     room=Room.objects.get(id=int(pk))
+    is_host = request.user.id == room.host.id
     messages=room.messages.all().order_by("created")
 
     if request.method=="POST":
@@ -96,7 +99,7 @@ def room(request,pk):
         room.participants.add(user)
         return redirect('room',pk)
     participants=room.participants.all()
-    context={"room":room, "messages":messages,"participants":participants}
+    context={"room":room, "messages":messages,"participants":participants,"is_host":is_host}
     return render(request,"firstApp/room.html",context=context)
 
 @login_required(login_url='login')
